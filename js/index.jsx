@@ -13,9 +13,9 @@ class PostList extends Component{
     constructor(props){
         super(props);
         this.state = {
-            data: [],
+            // data: [],
             pending: true,
-            checked:[]
+            peopleToDelete: []
         };
     }
     componentDidMount(){
@@ -71,15 +71,28 @@ class PostList extends Component{
         });
         console.log("remove ",item, this.state.data)
       }
-    
-    checkedPeople  (event) {
-        
-           
-         console.log( event)
+
+     delWoman(){
          
+
+         const newWoman = this.state.data.filter( people =>{
+            !this.state.peopleToDelete.includes(people)
+         })
+         console.log('delwoman ',newWoman)
+     } 
+    checkingFunction(e){
+        const target = e.target;
+        target.checked ? this.checkedPeople : console.log('dupa:(')
+    }
+   
+    checkedPeople  (event) {
+         this.setState({
+            peopleToDelete: [...this.state.peopleToDelete, event]
+         })
+        
     }  
     render(){
-        
+        console.log(this.state.peopleToDelete)
         if(this.state.pending){
             return(
                 <p>Loading...</p>
@@ -99,7 +112,7 @@ class PostList extends Component{
                             <th>Kobiety:</th>   
                         </tr> 
                         <tr>
-                            <th><button>usuń zaznaczone</button></th>
+                            <th><button onClick={this.delWoman}>usuń zaznaczone</button></th>
                             <th>Imię</th>
                             <th>Nazwisko</th>
                             <th>Data urodzenia<span> (dzien.miesiac.rok)</span></th>
@@ -132,7 +145,7 @@ class PostList extends Component{
                             <th>Mężczyźni:</th>   
                         </tr> 
                         <tr>
-                            <th><button onClick={this.handleRemove}>usuń zaznaczone</button></th>
+                            <th><button onClick={this.delMan}>usuń zaznaczone</button></th>
                             <th>Imię</th>
                             <th>Nazwisko</th>
                             <th>Data urodzenia<span> (dzien.miesiac.rok)</span></th>
@@ -145,7 +158,7 @@ class PostList extends Component{
                                 var sex = "man";
                                 return (
                                     <tr key={people.id} gender={sex}>
-                                        <td><input type="checkbox" id ={people.id}/></td>
+                                        <td><input type="checkbox" onClick={this.checkingFunction}/></td>
                                         <td>{people.name}</td>
                                         <td>{people.surname}</td>
                                         <td>{this.peselToBirth(people.pesel)}</td>
