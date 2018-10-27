@@ -17,6 +17,7 @@ class PostList extends Component{
             pending: true,
             peopleToDelete: []
         };
+        this.delWoman = this.delWoman.bind(this)
     }
     componentDidMount(){
         
@@ -71,14 +72,20 @@ class PostList extends Component{
         });
         console.log("remove ",item, this.state.data)
       }
-
+      
      delWoman(){
          
-
+        console.log("dupa delpepl", this.state.peopleToDelete)
+        console.log("dupa data", this.state.data)
          const newWoman = this.state.data.filter( people =>{
-            !this.state.peopleToDelete.includes(people)
+           return !this.state.peopleToDelete.includes(people.id)
+            }
+        )
+         
+         this.setState({
+             data: newWoman
          })
-         console.log('delwoman ',newWoman)
+        console.log( "newwoman: ", newWoman)
      } 
     checkingFunction(e){
         const target = e.target;
@@ -92,7 +99,8 @@ class PostList extends Component{
         
     }  
     render(){
-        console.log(this.state.peopleToDelete)
+        console.log("delete people ", this.state.peopleToDelete)
+        
         if(this.state.pending){
             return(
                 <p>Loading...</p>
